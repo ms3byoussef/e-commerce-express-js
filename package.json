@@ -11,8 +11,10 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.5.0",
+    "ecommerce-api": "file:",
     "express": "^5.1.0",
     "mongodb": "^6.16.0",
+    "mongoose": "^8.14.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
