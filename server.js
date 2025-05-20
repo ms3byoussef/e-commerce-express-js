@@ -2,38 +2,30 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
-const  mongoose = require("mongoose");
+const dbConnection = require("./config/database");
+// Routes
+const categoryRoute = require('./routers/categoryRoute');
 
-dotenv.config("config.env")
 
+dotenv.config({ path: 'config.env' });
+// express app
 const app = express();
+app.use(express.json());
+
 if(process.env.NODE_ENV === "development"){
     app.use(morgan("dev"));
     console.log("Development Mode");
 }
 
+dbConnection();
 
-mongoose.connect(
-    process.env.DB_URL,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }
-).then(()=>{
-    console.log("Connected to MongoDB");
-}).catch((err)=>{
-    console.log(err.message);
-});
+// Mount Routes
+app.use("/api/v1/categories", categoryRoute);
 
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
-
-
-const PORT=process.env.PORT;
+const PORT=process.env.PORT|| 8000;
 app.listen( PORT,()=>{
-    console.log("Server is running on port ${PORT}");
+    console.log("Server is running on port \${PORT}");
 });
  
 
