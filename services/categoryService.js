@@ -1,10 +1,11 @@
- const CategoryModel = require("../models/categoryModel");
  const slugify = require("slugify");
  const asyncHandler = require("express-async-handler");
+ const CategoryModel = require("../models/categoryModel");
+ const ApiError = require("../utils/apiError");
 
  
  // get all categories
- exports.getAllCategories =asyncHandler( async (req, res) => {
+ exports.getAllCategories =asyncHandler( async (req, res ) => {
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;
@@ -18,24 +19,28 @@
 
  // get category by id
 
- exports.getCategoryById =asyncHandler( async (req, res) => {
-    const {id} = req.params;
-    const category = await CategoryModel.findById(id);
-    if (!category) {
-      return res.status(404).json({ error: "Category not found" });
+ exports.getCategoryById =asyncHandler( async (req, res , next) => {
+  const { id } = req.params;
+  const category = await CategoryModel.findById(id);
+    if (!category) { 
+      return next(
+      new ApiError(`Category with id  not found`, 404)
+    );
     }
     res.status(200).json({ data: category });
  });
 
+// create category
 
+ exports.createCategory =asyncHandler( async (req, res , next) => {
 
- exports.createCategory =asyncHandler( async (req, res) => {
-
-    const name = req.body.name;
-    const photo = req.body.photo;
+    const {name} = req.body;
+    const {photo} = req.body;
 
     if (!name) {
-      return res.status(400).json({ error: "Category name is required" });
+      return next(
+        new ApiError(`Category name is required`, 404)
+      );
     }
 
     const category = await CategoryModel.create({
@@ -50,17 +55,20 @@
 
 // update category
 
-exports.updateCategory =asyncHandler( async (req, res) => {
+exports.updateCategory =asyncHandler( async (req, res , next) => {
   const {id} = req.params;
   const {name, photo} = req.body;
   const category = 
   await CategoryModel.findByIdAndUpdate(
     { _id: id},
      {name, slug: slugify(name, { lower: true }), photo,}
-    , {new: true},
+    , 
+    {new: true}
   );
   if (!category) {
-    return res.status(404).json({ error: "Category not found" });
+    return next(
+      new ApiError(`Category with id ${id} not found`, 404)
+    );
   }
   res.status(200).json({ data: category });
 });
@@ -68,11 +76,13 @@ exports.updateCategory =asyncHandler( async (req, res) => {
 
 // delete category
 
-exports.deleteCategory =asyncHandler( async (req, res) => {
+exports.deleteCategory =asyncHandler( async (req, res , next) => {
   const {id} = req.params;
   const category = await CategoryModel.findByIdAndDelete({_id:id});
   if (!category) {
-    return res.status(404).json({ error: "Category not found" });
+    return next(
+      new ApiError(`Category with id ${id} not found`, 404)
+    );
   }
   res.status(200).json({ message: "Category deleted successfully" });
 });

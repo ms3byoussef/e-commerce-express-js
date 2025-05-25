@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const schema = new mongoose.Schema(
     {
       name: {
@@ -24,20 +25,6 @@ const schema = new mongoose.Schema(
     { timestamps: true }
   );
   
-  const response = doc => {
-    const photo =
-      doc.photo ||
-      'https://res.cloudinary.com/nile-pharmacy/image/upload/v1558858260/assets/placeholder_a1ubee.jpg';
-  
-    return {
-      id: doc.id,
-      name: doc.name,
-      slug: doc.slug,
-   
-      photo: photo,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt
-    };
-  };
 
-  module.exports = mongoose.model('Category', schema);
+
+  module.exports = mongoose.model('CategoryModel', schema);
