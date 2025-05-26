@@ -8,6 +8,8 @@ const globalError = require("./middlewares/errorMiddleware");
  
 // Routes
 const categoryRoute = require('./routers/categoryRoute');
+const subCategoryRoute = require('./routers/subCategoryRoute');
+const brandRoute = require('./routers/brandRoute');
 
 
 dotenv.config({ path: 'config.env' });
@@ -24,6 +26,11 @@ dbConnection();
 
 // Mount Routes
 app.use("/api/v1/categories", categoryRoute);
+app.use("/api/v1/subcategories", subCategoryRoute);
+app.use("/api/v1/brands", brandRoute);
+
+
+
 
 // Handle undefined routes
 // app.all('*', (req, res, next) => {

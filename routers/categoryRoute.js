@@ -18,6 +18,15 @@
       } = require("../utils/validators/categoryValidator");
 
 
+      const subCategoryRoute =require ("./subCategoryRoute");
+
+      
+      // nested route 
+
+      router.use("/:categoryId/subcategories" , subCategoryRoute); 
+
+      
+     
 router
 .route("/")
 .post(createCategoryValidator,createCategory)
