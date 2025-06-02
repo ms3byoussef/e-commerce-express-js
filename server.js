@@ -10,7 +10,7 @@ const globalError = require("./middlewares/errorMiddleware");
 const categoryRoute = require('./routers/categoryRoute');
 const subCategoryRoute = require('./routers/subCategoryRoute');
 const brandRoute = require('./routers/brandRoute');
-
+const productRoute = require('./routers/productRoute');
 
 dotenv.config({ path: 'config.env' });
 // express app
@@ -28,6 +28,7 @@ dbConnection();
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/subcategories", subCategoryRoute);
 app.use("/api/v1/brands", brandRoute);
+app.use("/api/v1/products", productRoute);
 
 
 

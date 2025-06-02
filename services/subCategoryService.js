@@ -4,18 +4,19 @@ const SubCategoryModel = require("../models/subCategoryModel");
 const ApiError = require("../utils/apiError");
 
 
-exports.setCategoryIdToBody = (req, res, next) => {
-  if (!req.body.category)   req.body.category = req.params.categoryId;
-  next();
-}
 
+exports.setCategoryIdToBody =async(req, res , next)=>{
+  if (!req.body.category)   req.body.category = req.params.categoryId;
+
+next();
+}
  //@ desc create  SubCategory  
  // @route  POST /api/v1/subcategories/
  // @access  public
 exports.createSubCategory =asyncHandler( async (req, res , next) => {
 
 
-    const {name,category} = req.body;
+  const {name,category} = req.body;
 
 
     if (!name) {
@@ -37,16 +38,16 @@ exports.createSubCategory =asyncHandler( async (req, res , next) => {
 //@ desc get All SubCategories By Category
  // @route  GET /api/v1/categories/:categoryId/subcategories
  // @access  public
-
- exports.createFilterObject = (req, res, next) => {
-    // eslint-disable-next-line prefer-const
-    let filterObject  = {};
-    if (req.params.categoryId ) 
-      filterObject = { category: req.params.categoryId };
-    req.filterObject= filterObject ;
-     next();
-
-  }
+  
+exports.createFilterObject =async(req, res , next)=>{
+  
+  let filterObject  = {};
+  if (req.params.categoryId ) 
+    filterObject = { category: req.params.categoryId };
+  req.filterObject=filterObject;
+  next(); 
+}
+  
 
  //@ desc get All SubCategories 
  // @route  GET /api/v1/subcategories/
@@ -58,7 +59,7 @@ exports.getAllSubCategories =asyncHandler( async (req, res) => {
     const skip = (page - 1) * limit;
 
     console.log(req.params);
-
+ 
     
     const subCategories = await SubCategoryModel
     .find(req.filterObject)

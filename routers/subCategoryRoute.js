@@ -24,8 +24,9 @@ const router = express.Router( {mergeParams: true }); // to access params from p
 
  router
  .route("/") 
- .get(createFilterObject,getAllSubCategories)
- .post(setCategoryIdToBody,createSubCategoryValidator,createSubCategory);
+
+ .post(setCategoryIdToBody,createSubCategoryValidator,createSubCategory)
+.get(createFilterObject,getAllSubCategories);
 
 
 router
